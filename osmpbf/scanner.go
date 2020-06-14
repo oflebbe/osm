@@ -5,7 +5,7 @@ import (
 	"io"
 	"sync/atomic"
 
-	"github.com/paulmach/osm"
+	"github.com/oflebbe/osm"
 )
 
 var _ osm.Scanner = &Scanner{}

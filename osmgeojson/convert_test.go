@@ -8,7 +8,7 @@ import (
 
 	"github.com/paulmach/orb"
 	"github.com/paulmach/orb/geojson"
-	"github.com/paulmach/osm"
+	"github.com/oflebbe/osm"
 )
 
 func TestConvert(t *testing.T) {

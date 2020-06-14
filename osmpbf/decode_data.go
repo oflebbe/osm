@@ -4,8 +4,8 @@ import (
 	"time"
 
 	"github.com/gogo/protobuf/proto"
-	"github.com/paulmach/osm"
-	"github.com/paulmach/osm/osmpbf/internal/osmpbf"
+	"github.com/oflebbe/osm"
+	"github.com/oflebbe/osm/osmpbf/internal/osmpbf"
 )
 
 type elementInfo struct {

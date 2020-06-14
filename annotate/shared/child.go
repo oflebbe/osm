@@ -5,7 +5,7 @@ package shared
 import (
 	"time"
 
-	"github.com/paulmach/osm"
+	"github.com/oflebbe/osm"
 )
 
 // A Child represents a node, way or relation that is a dependent for

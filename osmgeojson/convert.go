@@ -5,8 +5,8 @@ import (
 
 	"github.com/paulmach/orb"
 	"github.com/paulmach/orb/geojson"
-	"github.com/paulmach/osm"
-	"github.com/paulmach/osm/internal/mputil"
+	"github.com/oflebbe/osm"
+	"github.com/oflebbe/osm/internal/mputil"
 )
 
 type context struct {

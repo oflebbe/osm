@@ -5,7 +5,7 @@ import (
 	"reflect"
 	"testing"
 
-	"github.com/paulmach/osm"
+	"github.com/oflebbe/osm"
 )
 
 func TestScanner(t *testing.T) {

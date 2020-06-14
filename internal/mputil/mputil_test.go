@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/paulmach/orb"
-	"github.com/paulmach/osm"
+	"github.com/oflebbe/osm"
 )
 
 func TestMultiSegment_LineString(t *testing.T) {

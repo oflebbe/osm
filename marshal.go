@@ -4,7 +4,7 @@ import (
 	"time"
 
 	"github.com/paulmach/orb"
-	"github.com/paulmach/osm/internal/osmpb"
+	"github.com/oflebbe/osm/internal/osmpb"
 
 	"github.com/gogo/protobuf/proto"
 )

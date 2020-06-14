@@ -4,7 +4,7 @@ import (
 	"encoding/xml"
 	"strconv"
 
-	"github.com/paulmach/osm/internal/osmpb"
+	"github.com/oflebbe/osm/internal/osmpb"
 
 	"github.com/gogo/protobuf/proto"
 )
