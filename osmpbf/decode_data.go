@@ -100,36 +100,34 @@ func (dec *dataDecoder) parseDenseNodes(pb *osmpbf.PrimitiveBlock, dn *osmpbf.De
 		StringTable:     st,
 		DateGranularity: int64(pb.GetDateGranularity()),
 	}
-	nodeSlice := make([]osm.Node, len(ids))
+
 	var id, lat, lon int64
 	for index := range ids {
 		id = ids[index] + id
 		lat = lats[index] + lat
 		lon = lons[index] + lon
 		info := state.Next()
-		n := nodeSlice[index]
-		n.ID = osm.NodeID(id)
-		n.Lat = 1e-9 * float64((latOffset + (granularity * lat)))
-		n.Lon = 1e-9 * float64((lonOffset + (granularity * lon)))
-		n.User = info.User
-		n.UserID = osm.UserID(info.UID)
-		n.Visible = info.Visible
-		n.Version = int(info.Version)
-		n.ChangesetID = osm.ChangesetID(info.Changeset)
-		n.Timestamp = info.Timestamp
-		n.Tags = tu.Next()
 
-		dec.q = append(dec.q, &n)
-
+		dec.q = append(dec.q, &osm.Node{
+			ID:          osm.NodeID(id),
+			Lat:         1e-9 * float64((latOffset + (granularity * lat))),
+			Lon:         1e-9 * float64((lonOffset + (granularity * lon))),
+			User:        info.User,
+			UserID:      osm.UserID(info.UID),
+			Visible:     info.Visible,
+			Version:     int(info.Version),
+			ChangesetID: osm.ChangesetID(info.Changeset),
+			Timestamp:   info.Timestamp,
+			Tags:        tu.Next(),
+		})
 	}
 }
 
 func (dec *dataDecoder) parseWays(pb *osmpbf.PrimitiveBlock, ways []*osmpbf.Way) {
 	st := pb.GetStringtable().GetS()
 	dateGranularity := int64(pb.GetDateGranularity())
-	waySlice := make([]osm.Way, len(ways))
 
-	for index, way := range ways {
+	for _, way := range ways {
 		var (
 			prev    int64
 			nodeIDs osm.WayNodes
@@ -143,18 +141,18 @@ func (dec *dataDecoder) parseWays(pb *osmpbf.PrimitiveBlock, ways []*osmpbf.Way)
 				nodeIDs[i] = osm.WayNode{ID: osm.NodeID(prev)}
 			}
 		}
-		w := waySlice[index]
-		w.ID = osm.WayID(way.Id)
-		w.User = info.User
-		w.UserID = osm.UserID(info.UID)
-		w.Visible = info.Visible
-		w.Version = int(info.Version)
-		w.ChangesetID = osm.ChangesetID(info.Changeset)
-		w.Timestamp = info.Timestamp
-		w.Nodes = nodeIDs
-		w.Tags = extractTags(st, way.Keys, way.Vals)
 
-		dec.q = append(dec.q, &w)
+		dec.q = append(dec.q, &osm.Way{
+			ID:          osm.WayID(way.Id),
+			User:        info.User,
+			UserID:      osm.UserID(info.UID),
+			Visible:     info.Visible,
+			Version:     int(info.Version),
+			ChangesetID: osm.ChangesetID(info.Changeset),
+			Timestamp:   info.Timestamp,
+			Nodes:       nodeIDs,
+			Tags:        extractTags(st, way.Keys, way.Vals),
+		})
 	}
 }
 
@@ -196,24 +194,23 @@ func extractMembers(stringTable []string, rel *osmpbf.Relation) osm.Members {
 func (dec *dataDecoder) parseRelations(pb *osmpbf.PrimitiveBlock, relations []*osmpbf.Relation) {
 	st := pb.GetStringtable().GetS()
 	dateGranularity := int64(pb.GetDateGranularity())
-	relationSlice := make([]osm.Relation, len(relations))
 
-	for index, rel := range relations {
+	for _, rel := range relations {
 		members := extractMembers(st, rel)
 		info := extractInfo(st, rel.GetInfo(), dateGranularity)
-		r := relationSlice[index]
-		r.ID = osm.RelationID(rel.Id)
-		r.User = info.User
-		r.UserID = osm.UserID(info.UID)
-		r.Visible = info.Visible
-		r.Version = int(info.Version)
-		r.ChangesetID = osm.ChangesetID(info.Changeset)
-		r.Timestamp = info.Timestamp
-		r.Tags = extractTags(st, rel.GetKeys(), rel.GetVals())
-		r.Members = members
-		dec.q = append(dec.q, &r)
-	}
 
+		dec.q = append(dec.q, &osm.Relation{
+			ID:          osm.RelationID(rel.Id),
+			User:        info.User,
+			UserID:      osm.UserID(info.UID),
+			Visible:     info.Visible,
+			Version:     int(info.Version),
+			ChangesetID: osm.ChangesetID(info.Changeset),
+			Timestamp:   info.Timestamp,
+			Tags:        extractTags(st, rel.GetKeys(), rel.GetVals()),
+			Members:     members,
+		})
+	}
 }
 
 func extractInfo(stringTable []string, i *osmpbf.Info, dateGranularity int64) elementInfo {

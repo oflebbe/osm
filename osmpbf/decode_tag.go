@@ -7,12 +7,12 @@ func extractTags(stringTable []string, keyIDs, valueIDs []uint32) osm.Tags {
 		return nil
 	}
 
-	tags := make(osm.Tags, len(keyIDs))
+	tags := make(osm.Tags, 0, len(keyIDs))
 	for index, keyID := range keyIDs {
-		tags[index] = osm.Tag{
+		tags = append(tags, osm.Tag{
 			Key:   stringTable[keyID],
 			Value: stringTable[valueIDs[index]],
-		}
+		})
 	}
 
 	return tags
